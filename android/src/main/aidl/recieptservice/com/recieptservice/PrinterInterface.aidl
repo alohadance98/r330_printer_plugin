@@ -13,4 +13,14 @@ interface PrinterInterface {
      void nextLine(int line);
      void printTableText(in String[] text,in int []weight,in int []alignment);
      void setTextBold(boolean bold);
+     void beginWork();
+     void endWork();
+     void setDark(int value);
+     void setLineHeight(float lineHeight);
+     void setTextDoubleWidth(boolean enable);
+     void setTextDoubleHeight(boolean enable);
+     void printPDF417Code(String data, int modulesize, int errorlevel);
+     void setCode(String code);
+     void print128BarCode(String data, int type, int height, int width);
+     boolean getScannerStatus();
 }

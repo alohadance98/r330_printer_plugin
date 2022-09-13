@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:r330_printer_plugin/r330_printer_plugin.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -20,40 +18,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final _r330PrinterPlugin = R330PrinterPlugin();
   @override
   void initState() {
     super.initState();
-    _bindingPrinter().then((value) => log('SP02 Printer Initialized'));
-  }
-
-  Future<bool?> _bindingPrinter() async {
-    final bool? result = await R330PrinterPlugin.bindingPrinter();
-    return result;
   }
 
   void printImage() async {
-    String resultValue;
-    try {
-      Uint8List byte;
-      final controller = ScreenshotController();
-      byte = await controller.captureFromWidget(_buildPrintTicket1());
-      final image = base64Encode(byte);
-      final Future<int> result = R330PrinterPlugin.goPrint(image);
-
-      resultValue = 'Print: $result';
-    } on PlatformException catch (e) {
-      resultValue = "Print failed: '${e.message}'.";
-    }
-  }
-
-  void printPaperFeed() {
-    String resultValue;
-    try {
-      final Future<int> result = R330PrinterPlugin.goPaperFeed(3);
-      resultValue = 'Print: $result';
-    } on PlatformException catch (e) {
-      resultValue = "Print failed: '${e.message}'.";
-    }
+    Uint8List byte;
+    final controller = ScreenshotController();
+    byte = await controller.captureFromWidget(_buildPrintTicket1());
+    _r330PrinterPlugin.printPicture(byte);
   }
 
   @override
@@ -76,7 +51,7 @@ class _MyAppState extends State<MyApp> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    printPaperFeed();
+                    _r330PrinterPlugin.nextLine(3);
                   },
                   child: const Text('paper feed')),
             ],
