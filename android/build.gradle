@@ -23,7 +23,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 31
-    namespace 'com.example.r330_printer_plugin'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
